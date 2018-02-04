@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {Http} from '@angular/http';
 import {LoginInfo} from './login';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class LoginService {
@@ -16,12 +17,17 @@ export class LoginService {
   private verifyUrl = `${environment.api.admin}verification/codeValidator`;
   // 重置密码地址
   private resetPwdUrl = `${environment.api.admin}account/passwordrevise`;
+  private results: string[];
 
-  constructor(
-    private http: Http) {}
+  constructor(private httpClient: HttpClient) {
+  }
 
-    // 获取用户token（登录凭证）
-    getUserToken(loginInfo: LoginInfo){
-
-    }
+  // 获取用户token（登录凭证）
+  getUserToken(loginInfo: LoginInfo) {
+    // const body = JSON.stringify(loginInfo);
+    // this.httpClient.post(this.loginUrl, body);
+    this.httpClient.get(this.loginUrl).subscribe(data => {
+      this.results = data['result'];
+    });
+  }
 }

@@ -1,20 +1,24 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
 
-import { AppComponent } from './app.component';
-import { SourceComponent } from './common/source/source.component';
+import {AppComponent} from './app.component';
+import {HighlightDirective} from './shared/highlight.directive';
+import {FormsModule} from '@angular/forms';
+import {AppRoutingModule} from './app-routing.module';
 
-
+// @NgModule装饰器用来为模块定义元数据。
 @NgModule({
   declarations: [
     AppComponent,
-    SourceComponent
+    AppRoutingModule
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
