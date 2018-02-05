@@ -7,7 +7,7 @@ import {HotelListComponent} from './hotel.list.component';
 export const appRoutes: Routes = [
   {
     path: '',
-    canActivate: [AuthGuard],
+    //canActivate: [AuthGuard],
     children: [
       {
         path: '',

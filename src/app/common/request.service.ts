@@ -28,19 +28,18 @@ export class RequestService {
     if (queryData) {
       requestData = Object.assign(requestData, sourceType);
     }
-    const responseResult = this.httpClient.get(url, {params: requestData, headers: this.authService.getHeaders()});
+    const responseResult = this.httpClient.get<any>(url, /*{params: requestData, headers: this.authService.getHeaders()}*/);
     // 处理响应
-    return responseResult.toPromise().then(
-      response => {
-        const status_code = response.json().status_code;
-        if (status_code === '50014011') {
-          this.authService.clearTokenByExpired;
-        } else if (status_code === '200') {
-          return response.json().biz_response;
-        } else {
-          return this.handleError(response);
-        }
-      }).catch(exception => {
+    return responseResult.subscribe((response) => {
+      const status_code = response.json().status_code;
+      if (status_code === '50014011') {
+        this.authService.clearTokenByExpired();
+      } else if (status_code === '200') {
+        return response.json().biz_response;
+      } else {
+        return this.handleError(response);
+      }
+    }).catch(exception => {
       this.handleError(exception.json());
     });
   }
@@ -56,22 +55,24 @@ export class RequestService {
     } else {
       return;
     }
-    const requestHeader: Observable<any> = {
-      headers: this.authService.getHttpHeaders(),
-      responseType: 'json'
-    };
-    const responseResult = this.httpClient.post(requestUrl, requestData, requestHeader);
+    // const requestHeader: Observable<any> = {
+    //   headers: this.authService.getHttpHeaders(),
+    //   responseType: 'json'
+    // };
+    const responseResult = this.httpClient.post(requestUrl, requestData);
     // 处理响应
-    return responseResult.subscribe().toPromise().then(
-      response => {
-        const status_code = response.json().status_code;
+    return responseResult.subscribe((result) => {
+        const status_code = result.json().status_code;
         if (status_code === '50014011') {
-          this.authService.clearTokenByExpired;
+          this.authService.clearTokenByExpired();
         } else if (status_code === '200') {
-          return response.json().biz_response;
+          return result.json().biz_response;
         } else {
-          return this.handleError(response);
+          return this.handleError();
         }
+      },
+      response => {
+        console.log('');
       }).catch(exception => {
       this.handleError(exception.json());
     });
