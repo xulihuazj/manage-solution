@@ -4,6 +4,8 @@ import {LoginComponent} from './login.component';
 import {LoginInfo} from './login';
 import {LoginService} from './login.service';
 import {HttpClientModule} from '@angular/common/http';
+import {LoginRoutingModule} from './login-routing.module';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   // 声明哪些组件、指令、管道属于该模块。
@@ -11,7 +13,12 @@ import {HttpClientModule} from '@angular/common/http';
   // 导入其它模块，从其它模块中获得本模块所需的组件、指令和管道。
   imports: [
     CommonModule,
-    HttpClientModule
+    // Http请求模块
+    HttpClientModule,
+    // 表单路由模块
+    FormsModule,
+    // 导入路由模块
+    LoginRoutingModule
   ],
   // 公开某些类，以便其它的组件模板可以使用它们。
   exports: [LoginInfo],
