@@ -20,31 +20,35 @@ export class RequestService {
     return Promise.reject(exception);
   }
 
-  authGet(url: string, queryData?: any, sourceType?: any): Promise<any> {
-    let requestData = this.sourceService.getSourceType();
+  // 被授权的Get请求方式
+  authorizedGet(url: string, queryData?: any): Promise<any> {
+    const sourceType = this.sourceService.getSourceType();
+    let requestData;
     if (sourceType) {
-      Object.assign(requestData, sourceType);
+      requestData = Object.assign(requestData, sourceType);
     }
     if (queryData) {
       requestData = Object.assign(requestData, sourceType);
     }
-    const responseResult = this.httpClient.get<any>(url, /*{params: requestData, headers: this.authService.getHeaders()}*/);
+    let returnResult: any = null;
+    const responseResult = this.httpClient.get<any>(url, JSON.parse(requestData));
     // 处理响应
-    return responseResult.subscribe((response) => {
-      const status_code = response.json().status_code;
+    responseResult.subscribe((response) => {
+      returnResult = response;
+      const status_code = returnResult.json().status_code;
       if (status_code === '50014011') {
         this.authService.clearTokenByExpired();
       } else if (status_code === '200') {
-        return response.json().biz_response;
+        returnResult = returnResult.json().biz_response;
       } else {
         return this.handleError(response);
       }
-    }).catch(exception => {
-      this.handleError(exception.json());
     });
+    return returnResult;
   }
 
-  authPost(requestUrl: string, queryData?: any, sourceType?: any): Promise<any> {
+  // 被授权的POST 请求方式
+  authorizedPost(requestUrl: string, queryData?: any, sourceType?: any): Promise<any> {
     const source = this.sourceService.getSourceType();
     const requestData = {biz_request: queryData};
     if (source) {
@@ -55,28 +59,68 @@ export class RequestService {
     } else {
       return;
     }
-    // const requestHeader: Observable<any> = {
-    //   headers: this.authService.getHttpHeaders(),
-    //   responseType: 'json'
-    // };
-    const responseResult = this.httpClient.post(requestUrl, requestData);
+    ;
+    let returnResult: any = null;
+    const response = this.httpClient.post(requestUrl, requestData);
     // 处理响应
-    return responseResult.subscribe((result) => {
-        const status_code = result.json().status_code;
-        if (status_code === '50014011') {
-          this.authService.clearTokenByExpired();
-        } else if (status_code === '200') {
-          return result.json().biz_response;
-        } else {
-          return this.handleError();
-        }
-      },
-      response => {
-        console.log('');
-      }).catch(exception => {
-      this.handleError(exception.json());
+    response.subscribe(result => {
+      returnResult = result;
+      const status_code = returnResult.json().status_code;
+      if (status_code === '50014011') {
+        this.authService.clearTokenByExpired();
+      } else if (status_code === '200') {
+        returnResult = returnResult.json().biz_response;
+      } else {
+        return this.handleError(returnResult);
+      }
     });
+    return returnResult;
   }
 
+  // 无需授权Get请求
+  commonGet(requestUrl: string, queryData?: any): Promise<any> {
+    const sourceType = this.sourceService.getSourceType();
+    let requestData;
+    if (queryData) {
+      requestData = Object.assign(sourceType, queryData);
+    } else {
+      requestData = sourceType;
+    }
+    let returnResult: any = null;
+    const response = this.httpClient.get(requestUrl, JSON.parse(requestData));
+    response.subscribe(result => {
+      returnResult = result;
+      if (returnResult.json().status_code === '200') {
+        returnResult = returnResult.json().biz_response;
+      } else {
+        return this.handleError(result);
+      }
+    });
+    return returnResult;
+  }
 
+  // 无需授权POST请求
+  commonPost(requestUrl: string, queryDat?: any): Promise<any> {
+    const sourceType = this.sourceService.getSourceType();
+    const reqData = {biz_request: queryDat};
+    if (queryDat) {
+      Object.assign(reqData, sourceType);
+    } else {
+      return;
+    }
+    let returnResult: any = null;
+    this.httpClient.post(requestUrl, reqData)
+      .subscribe(response => {
+        returnResult = response;
+        if (returnResult.json().status_code === '200') {
+          returnResult = returnResult.json().biz_response;
+        } else {
+          return this.handleError(response);
+        }
+      });
+    return returnResult;
+  }
 }
+
+
+

@@ -15,7 +15,8 @@ const router: Routes = [
   ],
   exports: [
     RouterModule
-  ]
+  ],
+  providers: []
 })
 export class LoginRoutingModule {
 }

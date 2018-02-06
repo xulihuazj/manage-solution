@@ -7,7 +7,7 @@ import {HotelDetailResolver} from './hotel.detail.resolver';
 
 export const appRoutes: Routes = [
   {
-    path: '',
+    path: 'hotel',
     //canActivate: [AuthGuard],
     children: [
       {
