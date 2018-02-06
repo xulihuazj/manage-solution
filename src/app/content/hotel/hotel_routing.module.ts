@@ -3,6 +3,7 @@ import {HotelComponent} from './hotel.component';
 import {NgModule} from '@angular/core';
 import {HotelDetailComponent} from './hotel.detail.component';
 import {HotelListComponent} from './hotel.list.component';
+import {HotelDetailResolver} from './hotel.detail.resolver';
 
 export const appRoutes: Routes = [
   {
@@ -31,6 +32,9 @@ export const appRoutes: Routes = [
   ],
   exports: [
     RouterModule
+  ],
+  providers: [
+    HotelDetailResolver
   ]
 })
 export class HotelRoutingModule {
