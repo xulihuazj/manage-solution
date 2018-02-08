@@ -7,7 +7,7 @@ export const routes: Routes = [
   // 空路径（''）表示应用的默认路径，当URL为空时就会访问那里，因此它通常会作为起点。 这个默认路由会重定向到URL /heroes，并显示HeroesListComponent。
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'userlogin',
     pathMatch: 'full'
   },
   {
@@ -19,10 +19,10 @@ export const routes: Routes = [
         // 惰性加载路由配置
         data: {preload: true}
       },
-     /* {
-        path: '',
-        loadChildren: 'app/',
-      }*/
+      /* {
+         path: '',
+         loadChildren: 'app/',
+       }*/
     ]
   },
   // { // 如果没有匹配到任何路由，跳转到分404 组件

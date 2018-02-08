@@ -1,2 +1,29 @@
-<router-outlet></router-outlet>
+<!--整个容器-->
+<md-sidenav-container>
+  <!--  侧边栏-->
+  <md-sidenav #sidenav1 align="start">
+    <app-sidebar></app-sidebar>
+  </md-sidenav>
+  <md-sidenav #sidenav2 align="end">
+    <app-sidebar></app-sidebar>
+  </md-sidenav>
+  <div class="site">
+    <header>
+      <app-header (toggle)="sidenav1.toggle()"></app-header>
+    </header>
+    <main>
+      <button (click)="sidenav1.open()" )>
+        打开右边侧边栏
+      </button>
+      <button (click)="sidenav2.open()" )>
+        打开左边侧边栏
+      </button>
+      <router-outlet></router-outlet>
+    </main>
+    <footer>
+      <app-footer></app-footer>
+    </footer>
+  </div>
+</md-sidenav-container>
+
 

@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
-
+import {MdSidenavModule} from '@angular/material';
 import {AppComponent} from './app.component';
 import {FormsModule} from '@angular/forms';
 import {AppRoutingModule} from './app-routing.module';
@@ -11,6 +11,7 @@ import {Router} from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LoginModule} from './login/login.module';
 import {ValidationComponent} from './form/validation/validation.component';
+import {CoreModule} from './core/core.module';
 
 
 // @NgModule装饰器用来为模块定义元数据。
@@ -27,6 +28,10 @@ import {ValidationComponent} from './form/validation/validation.component';
     BrowserAnimationsModule,
     // 导入根路由
     AppRoutingModule,
+    // 导入CoreModule
+    CoreModule,
+    // 导入Angular meterial
+    MdSidenavModule,
   ],
   // 需要的 service
   providers: [],
