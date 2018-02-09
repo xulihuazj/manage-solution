@@ -2,6 +2,7 @@
   "name": "manage-solution",
   "version": "0.0.0",
   "license": "MIT",
+ /* 定义应用可用的一些脚本*/
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
